@@ -1,0 +1,80 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Mask_Input</title>
+</head>
+
+<body>
+  <input type="text" class="mask-input" mask="##-###-###-###-##"/>
+  <script type="text/javascript">
+    document.addEventListener('DOMContentLoaded',()=>{
+      var inpt = document.querySelector(".mask-input");
+      var [val,leng,b_spc,dgr,indx]= [0,0,false,[],0];
+      var poss = 0;      
+      var real_val = [];
+      var mask = inpt.getAttribute("mask");
+      var [tire_poss,lengg] = [[],0];
+      let pos_cursor = 0;
+      for(let a of mask)
+      {
+        if(a == '#')
+        {
+          real_val.push('_');
+          lengg++;
+        }
+        else
+        {
+          real_val.push('-');
+          tire_poss.push(pos_cursor);
+        }
+
+        pos_cursor++;
+      }
+      var pos = [1,4,7,9];
+      settxt();
+      inpt.addEventListener('change',(e)=>{
+        leng = inpt.value.toString().length;
+      });
+      inpt.addEventListener('keydown',(e)=>{
+        console.log(inpt.value.toString().length);
+        if( (e.key>=0 && e.key<=9 && e.key != " " && val < lengg) || e.key == 'Backspace' ) {
+          if (e.key == 'Backspace') {
+            poss = inpt.selectionStart;
+            --poss;            
+            if(tire_poss.indexOf(poss) != -1)
+            {
+              real_val[poss] = '-';
+            }
+            else
+              real_val[poss] = '_';
+            val--;
+          } else {
+            poss = inpt.selectionStart;
+            real_val[poss] = e.key;
+            ++poss;            
+            if (tire_poss.indexOf(poss) != -1)
+              ++poss;
+            
+            val++;
+          }
+        }
+        else
+          e.preventDefault();
+        settxt();
+        inpt.setSelectionRange(poss,poss);
+        b_spc = false;
+        e.preventDefault();
+      });
+
+      function settxt()
+      {
+        let content ="";
+        for(let s of real_val)        
+          content += s;
+        inpt.value = content;
+      }
+    });
+  </script>
+</body>
+</html>
