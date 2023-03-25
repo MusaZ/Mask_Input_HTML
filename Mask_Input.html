@@ -47,8 +47,10 @@
               real_val[poss] = '-';
             }
             else
-              real_val[poss] = '_';
+              real_val[poss] = '_';              
             val--;
+            if(val < 0)
+              val = 0;
           } else {
             poss = inpt.selectionStart;
             real_val[poss] = e.key;
